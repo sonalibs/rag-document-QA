@@ -4,16 +4,16 @@ chunks= load_chunks()
 vectors= build_index(chunks)
 
 in_scope = [
-    ("What is chain-of-thought prompting?", "prompt_engineering.txt"),
-    ("What is prompt injection?", "prompt_engineering.txt"),
-    ("How does flash attention reduce memory usage?", "attention_machine_learning.txt"),
-    ("What is the attention mechanism?", "attention_machine_learning.txt"),
-    ("What does positional encoding do in a transformer?", "transformer_deep_learning.txt"),
-    ("What is GloVe?", "word_embedding.txt"),
-    ("How does retrieval-augmented generation reduce hallucinations?", "retrieval-augmented_generation.txt"),
-    ("What is hybrid search in RAG?", "retrieval-augmented_generation.txt"),
-    ("What is a vector database used for?", "vector_database.txt"),
-    ("What is reinforcement learning from human feedback?", "large_language_model.txt"),
+    ("What is chain-of-thought prompting?", "chain-of-thought prompting"),
+    ("What is prompt injection?", "Prompt injection is a type of cybersecurity attack"),
+    ("How does flash attention reduce memory usage?", "Flash attention is an implementation"),
+    ("What is the attention mechanism?", "attention is a method that determines"),
+    ("What does positional encoding do in a transformer?", "positional encodings"),
+    ("What is GloVe?", "Stanford University's GloVe"),
+    ("How does retrieval-augmented generation reduce hallucinations?", "reduce AI hallucinations"),
+    ("What is hybrid search in RAG?", "Hybrid search"),
+    ("What is a vector database used for?", "A vector database, vector store or vector search engine"),
+    ("What is reinforcement learning from human feedback?", "reinforcement learning from human feedback"),
 ]
 
 out_of_scope = [
@@ -25,16 +25,16 @@ out_of_scope = [
 
 hits = 0
 answered = 0
-for question, expected in in_scope:
+for question, evidence in in_scope:
     top = search(question, chunks, vectors, min_score=-1.0)
-    sources= [r["source"] for r in top]
-    kept= search(question, chunks, vectors)
-    if expected in sources:
+    kept = search(question, chunks, vectors)
+    hit = any(evidence.lower() in r["text"].lower() for r in top)
+    if hit:
         hits += 1
     if kept:
-        answered += 1 
-    status = "HIT " if expected in sources else "MISS"
-    print(status, round(top[0]["score"], 3), question, "->", sources)
+        answered += 1
+    status = "HIT " if hit else "MISS"
+    print(status, round(top[0]["score"], 3), question)
 
 
 refused= 0
@@ -46,12 +46,12 @@ for question in out_of_scope:
     print("REFUSED " if not kept else "ANSWERED", question)
 
 print()
-print(f"Retrival hit on top 3: {hits}/{len(in_scope)}")
-print(f" Not wrongly refused: {answered}/{len(in_scope)}")
+print(f"Right passage in top 3: {hits}/{len(in_scope)}")
+print(f"Not wrongly refused: {answered}/{len(in_scope)}")
 print(f"Correctly refused: {refused}/{len(out_of_scope)}")
 
 in_scores = []
-for question, expected in in_scope:
+for question, evidence in in_scope:
     top = search(question, chunks, vectors, min_score=-1.0)
     in_scores.append(top[0]["score"])
 
