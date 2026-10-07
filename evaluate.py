@@ -26,15 +26,20 @@ out_of_scope = [
 hits = 0
 answered = 0
 for question, evidence in in_scope:
-    top = search(question, chunks, vectors, min_score=-1.0)
+    top = search(question, chunks, vectors, top_k=20, min_score=-1.0)
     kept = search(question, chunks, vectors)
-    hit = any(evidence.lower() in r["text"].lower() for r in top)
+    rank = None
+    for i, r in enumerate(top, start=1):
+        if evidence.lower() in r["text"].lower():
+            rank = i
+            break
+    hit = rank is not None and rank <= 6
     if hit:
         hits += 1
     if kept:
         answered += 1
     status = "HIT " if hit else "MISS"
-    print(status, round(top[0]["score"], 3), question)
+    print(status, round(top[0]["score"], 3), "rank:", rank, question)
 
 
 refused= 0
@@ -46,7 +51,7 @@ for question in out_of_scope:
     print("REFUSED " if not kept else "ANSWERED", question)
 
 print()
-print(f"Right passage in top 3: {hits}/{len(in_scope)}")
+print(f"Right passage in top 6: {hits}/{len(in_scope)}")
 print(f"Not wrongly refused: {answered}/{len(in_scope)}")
 print(f"Correctly refused: {refused}/{len(out_of_scope)}")
 
