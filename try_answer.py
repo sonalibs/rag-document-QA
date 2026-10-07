@@ -1,11 +1,18 @@
-from src.search import load_chunks, build_index, search
-from src.generate import build_prompt, ask_llm
+from src.search import load_chunks, build_index
+from src.generate import answer
 
-chunks= load_chunks()
-vectors= build_index(chunks)
+chunks = load_chunks()
+vectors = build_index(chunks)
 
-question = "What is a vector database used for?"
-results= search(question, chunks, vectors)
-prompt= build_prompt(question, results)
+questions = [
+    "What is a vector database used for?",
+    "What is the attention mechanism?",
+    "Who won the 2018 football world cup?",
+]
 
-print(ask_llm(prompt))
+for q in questions:
+    reply, sources = answer(q, chunks, vectors)
+    print("Q:", q)
+    print(reply)
+    print("Sources:", ", ".join(sources) if sources else "none")
+    print()
