@@ -2,13 +2,14 @@ import numpy as np
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from src.chunking import chunk_text
+from src.cleaning import clean_text
 
 model= SentenceTransformer("all-MiniLM-L6-v2")
 
 def load_chunks(folder="data/ai_docs"):
     chunks= []
     for path in sorted(Path(folder).glob("*.txt")):
-        text= path.read_text(encoding="utf-8")
+        text= clean_text(path.read_text(encoding="utf-8"))
         for piece in chunk_text(text):
             chunks.append({"text": piece, "source": path.name})
     return chunks
