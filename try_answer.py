@@ -5,9 +5,9 @@ chunks = load_chunks()
 vectors = build_index(chunks)
 
 questions = [
-    "What is a vector database used for?",
-    "What is the attention mechanism?",
-    "Who won the 2018 football world cup?",
+    "Who is the CEO of OpenAI?",
+    "How does retrieval-augmented generation reduce hallucinations?",
+    "What is Python?",
 ]
 
 for q in questions:
