@@ -10,7 +10,7 @@ in_scope = [
     ("What is the attention mechanism?", "attention is a method that determines"),
     ("What does positional encoding do in a transformer?", "positional encodings"),
     ("What is GloVe?", "Stanford University's GloVe"),
-    ("How does retrieval-augmented generation reduce hallucinations?", "reduce AI hallucinations"),
+    ("How does retrieval-augmented generation reduce hallucinations?", "AI hallucinations"),
     ("What is hybrid search in RAG?", "Hybrid search"),
     ("What is a vector database used for?", "A vector database, vector store or vector search engine"),
     ("What is reinforcement learning from human feedback?", "reinforcement learning from human feedback"),

@@ -4,7 +4,7 @@ chunks = load_chunks()
 vectors = build_index(chunks)
 
 question = "How does retrieval-augmented generation reduce hallucinations?"
-phrase = "reduce AI hallucinations"
+phrase = "AI hallucinations"
 
 results = search(question, chunks, vectors, top_k=20, min_score=-1.0)
 for rank, r in enumerate(results, start=1):

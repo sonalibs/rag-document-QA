@@ -8,6 +8,7 @@ def build_prompt(question, results):
     return (
         "Answer the question using ONLY the context below. "
         "Do not add facts that are not in the context. "
+        "If several parts of the context are relevant, combine them, and include any limits or caveats the context mentions. "
         "Keep the answer to 2-4 sentences, and put the source number like [1] right after each claim. "
         "If the context does not contain the answer, say you don't know.\n\n"
         f"Context:\n{context}"

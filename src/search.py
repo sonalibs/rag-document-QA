@@ -18,7 +18,7 @@ def build_index(chunks):
     texts= [c["text"] for c in chunks]
     return model.encode(texts, normalize_embeddings=True)
 
-def search(question, chunks, vectors, top_k=6, min_score=0.30):
+def search(question, chunks, vectors, top_k=6, min_score=0.35):
     q = model.encode([question], normalize_embeddings=True)[0]
     scores = vectors @ q
     best = np.argsort(scores)[::-1][:top_k]
