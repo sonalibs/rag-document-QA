@@ -1,3 +1,5 @@
+import requests
+
 def build_prompt(question, results):
     context = ""
     for i, r in enumerate(results, start=1):
@@ -9,3 +11,16 @@ def build_prompt(question, results):
         f"Context:\n{context}"
         f"Question: {question}\nAnswer:"
     )
+
+def ask_llm(prompt):
+    response = requests.post(
+        "http://localhost:11434/api/chat",
+        json={
+            "model": "llama3.2",
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": False,
+        },
+        timeout=120,
+    )
+    response.raise_for_status()
+    return response.json()["message"]["content"]
